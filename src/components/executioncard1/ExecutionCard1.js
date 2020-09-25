@@ -6,6 +6,9 @@ import { Services } from "../../pages";
 import axios from "axios";
 import Typography from "@material-ui/core/Typography";
 import { LinearProgressWithLabel } from "..";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Box from '@material-ui/core/Box';
+
 import { SimplePopover } from "..";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -41,13 +44,18 @@ export default function ExecutionCard1(props) {
   const [loading, setLoading] = React.useState(false);
   // const props.data = props.data;
   console.log(props.data);
-  console.log(props.work);
-  // const output = props.work.map(item => item.status);
-  // console.log(output);
-  {props.work.map((item) => {
-    return(
-<Typography>{item.status}</Typography>
-    )})}
+  console.log("executionWork",props.work);
+  
+  let successCount = props.work.filter(x => x.status >= 1900).length
+  let failCount = props.work.filter(x => x.status < 1900).length
+  let success = successCount / props.work.length * 100
+  let fail = failCount / props.work.length * 100
+  
+
+//   {props.work.map((item) => {
+//     return(
+// <Typography>{item.status}</Typography>
+//     )})}
   // console.log(props.work.length);
   // const obj = JSON.parse(props.work);
   // console.log(obj.status); 
@@ -108,28 +116,41 @@ export default function ExecutionCard1(props) {
           </Typography>
           
           {/* <Card align="right"> */}
-
-          <LinearProgressWithLabel />
+     <div>   
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+          <LinearProgress variant="buffer" value={success} />
+          </Box>
+          <Box minWidth={35}>
+  <Typography variant="body2" color="textSecondary">{success}%</Typography>
+      </Box>
+      </Box>
+      {/* </div>   */}
+           {/* <LinearProgressWithLabel /> */}
           {/* </Card> */}
-          <div>
+          {/* <div> */}
   
       {/* <TimelineCard/> */}
     </div>
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
           <Typography
             variant="overline"
             component="h2"
             align="left"
-            color="textSecondary"
-            style={{paddingLeft: '200px'}}
+            color="primary"
+            style={{paddingLeft: '20px'}}
           >
             Worfklow: {props.data.name}
-          </Typography>
+          </Typography></Box>
+          <Box minWidth={35}>
+      
           <Typography
             variant="overline"
             component="h2"
             align="left"
             color="textSecondary"
-            style={{paddingLeft: '200px'}}
+            style={{paddingLeft: '20px'}}
           >
             Start Time: {props.data.start_time}
           </Typography>
@@ -138,7 +159,7 @@ export default function ExecutionCard1(props) {
             component="h2"
             align="left"
             color="textSecondary"
-            style={{paddingLeft: '200px'}}
+            style={{paddingLeft: '20px'}}
           >
             End Time: {props.data.end_time}
           </Typography>
@@ -147,21 +168,25 @@ export default function ExecutionCard1(props) {
             component="h2"
             align="left"
             color="textSecondary"
-            style={{paddingLeft: '200px'}}
+            style={{paddingLeft: '20px'}}
           >
             Estimated Runtime: {props.data.estimated_runtime}
           </Typography>
+          <Box width="100%" mr={1}>
           <Typography
             variant="overline"
             component="h2"
             align="left"
             color="textSecondary"
-            style={{paddingLeft: '200px'}}
+            style={{paddingLeft: '20px'}}
           >
             Status: {props.data.status_text} <span style={{paddingLeft: '400px'}}>   </span>
        
        
           </Typography>
+          </Box>
+          </Box>
+      </Box>
         </CardContent>
         <CardActions>
           <Grid

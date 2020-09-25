@@ -9,8 +9,8 @@ import applicationFailure from "./svgs/application_failure.png"
 import Typography from "@material-ui/core/Typography";
 //const gap = 50;
 const gap = 105;
-const primaryX = 200;
-const LPrimaryX = 250;
+const primaryX = 230;
+const LPrimaryX = 275;
 var posX = 450;
 var speed = 2;
 var image_gap =100;
@@ -21,6 +21,7 @@ const imageX = 50;
 const heartSVG = "M0 200 v-200 h200 a100,100 90 0,1 0,200 a100,100 90 0,1 -200,0 z"
 const SVG_PATH = new Path2D(heartSVG);
 
+var offset = 0;
 const drawTypes = {
   applicationSuccess: '/siteIcons/mobile-analytics-success.svg',
   databaseSuccess: '/siteIcons/database-success.svg',
@@ -98,21 +99,22 @@ export default function Canvas(props) {
     canvasWidth,
     canvasHeight,
   ] = useCanvas();
-  
+
   // const netdata = props.data;
-  const [offset, setOffset] = React.useState(0);
+  // const [offset, setOffset] = React.useState(0);
  //console.log(netdata);
   const handleClearCanvas = (event) => {
     setCoordinates([]);
   };
   useEffect(() => {
-    // if (props.networks) {
+    if (props.networks) {
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
-    draw(ctx);
+    // draw(ctx);
+    march();
     draw2(ctx);
-    //march();
-    // }
+   
+    }
   }, [canvasRef]);
 
   useEffect(() => {
@@ -122,10 +124,30 @@ export default function Canvas(props) {
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    draw(ctx);
+    march();
     draw2(ctx);
+    
+    // draw(ctx);
   }, [props.data]);
   
+  function march() {
+    const canvasObj = canvasRef.current;
+    const ctx = canvasObj.getContext("2d");
+    // ctx.clearRect(LPrimaryX + 0, 50, canvasWidth/3, canvasHeight+500);
+    // ctx.clearRect(LPrimaryX + 0, 50, width/1.5, height);
+    ctx.clearRect(LPrimaryX + 0, 500, canvasWidth, canvasHeight);
+
+    // setOffset(offset + 1);
+    offset = offset+1;
+    if (offset > 20) {
+        offset = 0;
+      }
+      draw(ctx);
+      
+      setTimeout(march, 60);
+    }
+  
+
  
   const getImage2 = (item) => {
       //return SVG_PATH;
@@ -201,8 +223,8 @@ export default function Canvas(props) {
     const width = 800;
     const height = 800;
     ctx.font = "bold 14px ARIAL";
-    ctx.fillText("PRIMARY SITE", 180,  70);
-    ctx.fillText("SECONDARY SITE", 880,  70);
+    ctx.fillText("PRIMARY SITE", 180,  50);
+    ctx.fillText("SECONDARY SITE", 880,  50);
     const networkData = getNetworkData(props.data);
     const { nodes, links } = networkData;
     console.log(nodes);
@@ -222,7 +244,7 @@ export default function Canvas(props) {
         case 1:
           // image_gap = image_gap + 150;
           ctx.font = "lighter 15px Arial";
-          ctx.fillText(val.key, primaryX - 50, val.row * gap + 70);
+          ctx.fillText(val.key, primaryX - 50, val.row * gap + 75);
           ctx.save();
           ctx.scale(1, 1);
           //ctx.translate(primaryX, val.row * gap);
@@ -239,7 +261,7 @@ export default function Canvas(props) {
         case 2:
           //image_gap = image_gap + 150;
           ctx.font = "lighter 15px Arial";
-          ctx.fillText(val.key, secondaryX+170, val.row * gap + 70);
+          ctx.fillText(val.key, secondaryX+300, val.row * gap + 75);
           ctx.save();
           ctx.scale(1, 1  );
           //ctx.translate(secondaryX, val.row * gap);
@@ -301,7 +323,7 @@ export default function Canvas(props) {
     // const ctx = canvas.current.getContext('2d');
     const width = 1000;
     const height = 1000;
-
+   
     const networkData = getNetworkData(props.data);
     const { nodes, links } = networkData;
     const LSecondaryX = LPrimaryX + width / 2 +150;
@@ -310,15 +332,15 @@ export default function Canvas(props) {
 
     ctx.strokeStyle = "#084a80";
     //ctx.strokeStyle = "#044a80";
-
+   
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.clearRect(LPrimaryX + 70, 50, width / 3 - 50, height);
-    ctx.clearRect(LSecondaryX + 100, 50, width / 3, height);
+    ctx.clearRect(LPrimaryX + 0, 50, width/1.5, height);
+    // ctx.clearRect(LSecondaryX -20, 70, width /1.5, height);
 //   setTimeout(function(){
 //     refreshPage()
 //  }, 10000);
     ctx.setLineDash([9, 2]);
-    ctx.lineDashOffset = -9;
+    ctx.lineDashOffset = -offset;
     //ctx.strokeRect(10, 10, 100, 100);
     ctx.beginPath();
 
@@ -376,14 +398,14 @@ export default function Canvas(props) {
     //   });
     // }
   };
-  window.setInterval(dashInterval, 500);
-  var currentOffset = 0;
+  // window.setInterval(dashInterval, 500);
+//   var currentOffset = 0;
 
-function dashInterval() {
-   // draw();
-    currentOffset += 10;
-    if (currentOffset >= 100) currentOffset = 0;
-}
+// function dashInterval() {
+//    // draw();
+//     currentOffset += 10;
+//     if (currentOffset >= 100) currentOffset = 0;
+// }
   // requestAnimationFrame(100);
   // function moveLine () {
   //   posX += speed;

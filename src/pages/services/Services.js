@@ -124,7 +124,7 @@ export default function Services(props) {
     const timer = setTimeout(() => {
      // setVideos(dummyData);
       setLoading(false);
-    }, 5000);
+    }, 1000);
     // Cancel the timer while unmounting
     return () => clearTimeout(timer);
   }, []);
@@ -243,82 +243,82 @@ export default function Services(props) {
 
 //var fAction = services[serviceIndex].value1;
 
-  useEffect(() => {
-    console.log('2', canvasRef)
-    const canvas = canvasRef.current
-    if(canvas != null)
-    {
-        console.log('1',canvas)
-        const context = canvas.current.getContext('2d')
-        draw(context)
-    }
-  }, [canvasRef])
+  // useEffect(() => {
+  //   console.log('2', canvasRef)
+  //   const canvas = canvasRef.current
+  //   if(canvas != null)
+  //   {
+  //       console.log('1',canvas)
+  //       const context = canvas.current.getContext('2d')
+  //       draw(context)
+  //   }
+  // }, [canvasRef])
 
-  const draw = (ctx) => {
-    console.log('draw')
-    // const ctx = canvas.current.getContext('2d');
-      const width = 800
-      const height = 800
+//   const draw = (ctx) => {
+//     console.log('draw')
+//     // const ctx = canvas.current.getContext('2d');
+//       const width = 800
+//       const height = 800
 
-    const { networkData } = networks;
-    const { nodes } = networkData;
-    const secondaryX = primaryX + width / 3;
-    const teritaryX = secondaryX + width / 3;
+//     const { networkData } = networks;
+//     const { nodes } = networkData;
+//     const secondaryX = primaryX + width / 3;
+//     const teritaryX = secondaryX + width / 3;
 
-    ctx.strokeStyle = "#044a80";
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.clearRect(primaryX + 50, 50, width / 3 - 50, height);
-    ctx.clearRect(secondaryX + 100, 50, width / 3, height);
+//     ctx.strokeStyle = "#044a80";
+//     // ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     ctx.clearRect(primaryX + 50, 50, width / 3 - 50, height);
+//     ctx.clearRect(secondaryX + 100, 50, width / 3, height);
 
-    ctx.setLineDash([9, 2]);
-    ctx.lineDashOffset = -this.state.offset;
-    //ctx.strokeRect(10, 10, 100, 100);
-    ctx.beginPath();
+//     ctx.setLineDash([9, 2]);
+//     ctx.lineDashOffset = -this.state.offset;
+//     //ctx.strokeRect(10, 10, 100, 100);
+//     ctx.beginPath();
 
-    if (links) {
-      links.forEach((val: any) => {
-        const from = nodes.filter((node: any) => {
-          return node?.key === val.from;
-        })[0];
-        const to = nodes.filter((node: any) => {
-          return node.key === val.to;
-        })[0];
-        switch (from.col) {
-          case 1:
-            ctx.moveTo(primaryX + 50, from.row * gap + 25);
-            break;
-          case 2:
-            ctx.moveTo(secondaryX, from.row * gap + 25);
-            break;
-          case 3:
-            ctx.moveTo(teritaryX, from.row * gap + 25);
-            break;
-          default:
-            break;
-        }
-        switch (to.col) {
-          case 1:
-            ctx.lineTo(primaryX + 50, to.row * gap + 25);
-            break;
-          case 2:
-            ctx.lineTo(secondaryX, to.row * gap + 25);
+//     if (links) {
+//       links.forEach((val: any) => {
+//         const from = nodes.filter((node: any) => {
+//           return node?.key === val.from;
+//         })[0];
+//         const to = nodes.filter((node: any) => {
+//           return node.key === val.to;
+//         })[0];
+//         switch (from.col) {
+//           case 1:
+//             ctx.moveTo(primaryX + 50, from.row * gap + 25);
+//             break;
+//           case 2:
+//             ctx.moveTo(secondaryX, from.row * gap + 25);
+//             break;
+//           case 3:
+//             ctx.moveTo(teritaryX, from.row * gap + 25);
+//             break;
+//           default:
+//             break;
+//         }
+//         switch (to.col) {
+//           case 1:
+//             ctx.lineTo(primaryX + 50, to.row * gap + 25);
+//             break;
+//           case 2:
+//             ctx.lineTo(secondaryX, to.row * gap + 25);
 
-            break;
+//             break;
 
-          case 3:
-            ctx.lineTo(teritaryX - 25, to.row * gap + 25);
+//           case 3:
+//             ctx.lineTo(teritaryX - 25, to.row * gap + 25);
 
-            break;
+//             break;
 
-          default:
-            break;
-        }
-      });
-    }
+//           default:
+//             break;
+//         }
+//       });
+//     }
 
-    ctx.lineWidth = 5;
-    ctx.stroke();
-};
+//     ctx.lineWidth = 5;
+//     ctx.stroke();
+// };
 
   // if (services.length == 0) {
   //   return <Grid container className={classes.root} />;
@@ -371,7 +371,7 @@ export default function Services(props) {
         {/* <Typography>{services.item.value1} */}
           
           {/* </Typography> */}
-      <ExecutionCard2 data={execution2} />  
+      <ExecutionCard2 data={execution2} work={children2}  />  
       <Grid><TimelineCard  data={children2} /></Grid>
       </Grid>
       <Grid item xs={11}>
