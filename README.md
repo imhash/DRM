@@ -13,14 +13,13 @@ In the project directory, you can run:
 
 ### `npm install`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To Install npm and its dependencies<br />
 
 ### `Configure Dashboard`
 
 Open config/DefaulSetting.js <br />
 
-base_url: 'http://localhost:8088/ae/api/v1' - Base URL for RestEndpoint<br />
+base_url: 'http://localhost:8088/ae/api/v1' - Base URL for RestEndpoint. <br />
 client: Provide the DR Client Number. <br />
 authorization: Basic Authorization Header of Username and Password<br />
 application_list: Automic VARA object which defines theapplication list. <br />
@@ -29,3 +28,5 @@ application_list: Automic VARA object which defines theapplication list. <br />
 
 To bring up DR Dashboard  
 
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
