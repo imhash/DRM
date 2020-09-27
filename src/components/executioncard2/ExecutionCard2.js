@@ -11,30 +11,28 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import Popover from '@material-ui/core/Popover';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import HotelIcon from '@material-ui/icons/Hotel';
-import RepeatIcon from '@material-ui/icons/Repeat';
-import AssignmentTwoToneIcon from '@material-ui/icons/AssignmentTwoTone';
+import Popover from "@material-ui/core/Popover";
+import Timeline from "@material-ui/lab/Timeline";
+import TimelineItem from "@material-ui/lab/TimelineItem";
+import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
+import TimelineConnector from "@material-ui/lab/TimelineConnector";
+import TimelineContent from "@material-ui/lab/TimelineContent";
+import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
+import TimelineDot from "@material-ui/lab/TimelineDot";
+import FastfoodIcon from "@material-ui/icons/Fastfood";
+import LaptopMacIcon from "@material-ui/icons/LaptopMac";
+import HotelIcon from "@material-ui/icons/Hotel";
+import RepeatIcon from "@material-ui/icons/Repeat";
+import AssignmentTwoToneIcon from "@material-ui/icons/AssignmentTwoTone";
 import { Variants } from "..";
 import { TimelineCard } from "..";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Box from '@material-ui/core/Box';
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Box from "@material-ui/core/Box";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
-
-
 
 export default function ExecutionCard2(props) {
   const classes = useStyles();
@@ -42,25 +40,16 @@ export default function ExecutionCard2(props) {
   const [loading, setLoading] = React.useState(false);
   //const props.data = props.data;
   console.log(props.data);
-  console.log("action",props.action);
+  console.log("action", props.action);
 
-  let successCount = props.work.filter(x => x.status >= 1900).length
-  let success = successCount / props.work.length * 100
+  let successCount = props.work.filter((x) => x.status >= 1900).length;
+  let success = (successCount / props.work.length) * 100;
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
   if (props.data == null) {
     return null;
   }
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const timer = setTimeout(() => {
-  //    // setVideos(dummyData);
-  //     setLoading(false);
-  //   }, 5000);
-  //   // Cancel the timer while unmounting
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,100 +58,95 @@ export default function ExecutionCard2(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
- 
 
- // Load this effect on mount
-
-  
   return (
     // <div className="App">
     //     {loading && <Variants />}
     //     {!loading &&
-    <Grid item sm   xs={12}>
+    <Grid item sm xs={12}>
       <Card
         className={classes.root}
         variant="outlined"
         style={{ background: "#dbd9d9" }}
       >
-        
         <CardContent>
-          <Typography color="textSecondary" >
-          {props.data.archive_key1}
+          <Typography color="textSecondary">
+            {props.data.archive_key1}
           </Typography>
-          
+
           {/* <Card align="right"> */}
-     <div>   
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-          <LinearProgress variant="buffer" value={success} />
+          <div>
+            <Box display="flex" alignItems="center">
+              <Box width="100%" mr={1}>
+                <LinearProgress variant="buffer" value={success} />
+              </Box>
+              <Box minWidth={35}>
+                <Typography variant="body2" color="textSecondary">
+                  {success}%
+                </Typography>
+              </Box>
+            </Box>
+            {/* </div>   */}
+            {/* <LinearProgressWithLabel /> */}
+            {/* </Card> */}
+            {/* <div> */}
+
+            {/* <TimelineCard/> */}
+          </div>
+          <Box display="flex" alignItems="center">
+            <Box width="100%" mr={1}>
+              <Typography
+                variant="overline"
+                component="h2"
+                align="left"
+                color="primary"
+                style={{ paddingLeft: "20px" }}
+              >
+                Worfklow: {props.data.name}
+              </Typography>
+            </Box>
+            <Box minWidth={35}>
+              <Typography
+                variant="overline"
+                component="h2"
+                align="left"
+                color="textSecondary"
+                style={{ paddingLeft: "20px" }}
+              >
+                Start Time: {props.data.start_time}
+              </Typography>
+              <Typography
+                variant="overline"
+                component="h2"
+                align="left"
+                color="textSecondary"
+                style={{ paddingLeft: "20px" }}
+              >
+                End Time: {props.data.end_time}
+              </Typography>
+              <Typography
+                variant="overline"
+                component="h2"
+                align="left"
+                color="textSecondary"
+                style={{ paddingLeft: "20px" }}
+              >
+                Estimated Runtime: {props.data.estimated_runtime}
+              </Typography>
+              <Box width="100%" mr={1}>
+                <Typography
+                  variant="overline"
+                  component="h2"
+                  align="left"
+                  color="textSecondary"
+                  style={{ paddingLeft: "20px" }}
+                >
+                  Status: {props.data.status_text}{" "}
+                  <span style={{ paddingLeft: "400px" }}> </span>
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-          <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{success}%</Typography>
-      </Box>
-      </Box>
-      {/* </div>   */}
-           {/* <LinearProgressWithLabel /> */}
-          {/* </Card> */}
-          {/* <div> */}
-  
-      {/* <TimelineCard/> */}
-    </div>
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-          <Typography
-            variant="overline"
-            component="h2"
-            align="left"
-            color="primary"
-            style={{paddingLeft: '20px'}}
-          >
-            Worfklow: {props.data.name}
-          </Typography></Box>
-          <Box minWidth={35}>
-      
-          <Typography
-            variant="overline"
-            component="h2"
-            align="left"
-            color="textSecondary"
-            style={{paddingLeft: '20px'}}
-          >
-            Start Time: {props.data.start_time}
-          </Typography>
-          <Typography
-            variant="overline"
-            component="h2"
-            align="left"
-            color="textSecondary"
-            style={{paddingLeft: '20px'}}
-          >
-            End Time: {props.data.end_time}
-          </Typography>
-          <Typography
-            variant="overline"
-            component="h2"
-            align="left"
-            color="textSecondary"
-            style={{paddingLeft: '20px'}}
-          >
-            Estimated Runtime: {props.data.estimated_runtime}
-          </Typography>
-          <Box width="100%" mr={1}>
-          <Typography
-            variant="overline"
-            component="h2"
-            align="left"
-            color="textSecondary"
-            style={{paddingLeft: '20px'}}
-          >
-            Status: {props.data.status_text} <span style={{paddingLeft: '400px'}}>   </span>
-       
-       
-          </Typography>
-          </Box>
-          </Box>
-      </Box>
         </CardContent>
         <CardActions>
           <Grid
@@ -184,13 +168,9 @@ export default function ExecutionCard2(props) {
             }}
           >
             {/* <Button>Run Failover</Button> */}
-            
           </Grid>
         </CardActions>
       </Card>
-     
     </Grid>
-  
-          // }</div>
-          );
+  );
 }

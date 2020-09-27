@@ -7,34 +7,32 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Services } from "../../pages";
-import axios from "axios";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
 
-export default function ReadinessTable(rt) {
+export default function ReadinessTable(props) {
   const classes = useStyles();
 
-  if (rt.data == null) {
+  if (props.data == null) {
     return null;
   }
   return (
     <TableContainer component={Paper}>
-      <Table  aria-label="caption table">
+      <Table aria-label="caption table">
         {/* <caption>A basic table example with a caption</caption> */}
         <TableHead>
           <TableRow>
-            {rt.data.map((row) => (
+            {props.data.map((row) => (
               <TableCell>{row.value1}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
-            {rt.data.map((row) => (
+            {props.data.map((row) => (
               <TableCell>{row.value2}</TableCell>
             ))}
           </TableRow>

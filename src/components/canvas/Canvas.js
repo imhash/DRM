@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useCanvas } from "./useCanvas";
 import "./Canvas.css";
-import databaseSuccess from "./svgs/database_success.png"
-import databaseFailure from "./svgs/database_failure.png"
-import applicationSuccess from "./svgs/application_success.png"
-import applicationFailure from "./svgs/application_failure.png"
+import databaseSuccess from "./svgs/database_success.png";
+import databaseFailure from "./svgs/database_failure.png";
+import applicationSuccess from "./svgs/application_success.png";
+import applicationFailure from "./svgs/application_failure.png";
 
 import Typography from "@material-ui/core/Typography";
 //const gap = 50;
@@ -13,22 +13,20 @@ const primaryX = 230;
 const LPrimaryX = 275;
 var posX = 450;
 var speed = 2;
-var image_gap =100;
-//const primaryX = 50;
+var image_gap = 100;
 const imageX = 50;
-//const image = new Image(30, 30); // Using optional size for image
-//image.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
-const heartSVG = "M0 200 v-200 h200 a100,100 90 0,1 0,200 a100,100 90 0,1 -200,0 z"
+const heartSVG =
+  "M0 200 v-200 h200 a100,100 90 0,1 0,200 a100,100 90 0,1 -200,0 z";
 const SVG_PATH = new Path2D(heartSVG);
 
 var offset = 0;
 const drawTypes = {
-  applicationSuccess: '/siteIcons/mobile-analytics-success.svg',
-  databaseSuccess: '/siteIcons/database-success.svg',
-  siteSuccess: '/siteIcons/company-success.svg',
-  applicationFailed: '/siteIcons/mobile-analytics-failed.svg',
-  databaseFailed: '/siteIcons/database-failed.svg',
-  siteFailed: '/siteIcons/company-failed.svg',
+  applicationSuccess: "/siteIcons/mobile-analytics-success.svg",
+  databaseSuccess: "/siteIcons/database-success.svg",
+  siteSuccess: "/siteIcons/company-success.svg",
+  applicationFailed: "/siteIcons/mobile-analytics-failed.svg",
+  databaseFailed: "/siteIcons/database-failed.svg",
+  siteFailed: "/siteIcons/company-failed.svg",
 };
 const drawTypes2 = {
   applicationSuccess: require("./svgs/mobile-analytics-success.svg"),
@@ -38,34 +36,29 @@ const drawTypes2 = {
   databaseFailed: require("./svgs/database-failed.svg"),
   siteFailed: require("./svgs/company-failed.svg"),
 };
-//image.src = database
 
 const imageApplicationSuccess = new Image(50, 50);
-imageApplicationSuccess.src = applicationSuccess
+imageApplicationSuccess.src = applicationSuccess;
 const imageApplicationFailure = new Image(50, 50);
-imageApplicationFailure.src = applicationFailure
+imageApplicationFailure.src = applicationFailure;
 const imageDatabaseFailure = new Image(50, 50);
-imageDatabaseFailure.src = databaseFailure
-const imageDatabaseSuccess= new Image(50, 50);
-imageDatabaseSuccess.src = databaseSuccess
-const getImage = (type,status) => {
-  if(type==="Application" && status==="OK") {
-    return imageApplicationSuccess
-  } else if(type==="Database"&& status==="OK") {
+imageDatabaseFailure.src = databaseFailure;
+const imageDatabaseSuccess = new Image(50, 50);
+imageDatabaseSuccess.src = databaseSuccess;
+const getImage = (type, status) => {
+  if (type === "Application" && status === "OK") {
+    return imageApplicationSuccess;
+  } else if (type === "Database" && status === "OK") {
     return imageDatabaseSuccess;
-  } else if(type==="Application" && status==="FAIL") {
+  } else if (type === "Application" && status === "FAIL") {
     return imageApplicationFailure;
-
-  } else if(type==="Database"&& status==="OK") {
+  } else if (type === "Database" && status === "OK") {
     return imageDatabaseFailure;
-  } else if(type==="app") {
-
-  } else if(type==="app") {
-
+  } else if (type === "app") {
+  } else if (type === "app") {
   }
-    return imageDatabaseFailure;
-  
-}
+  return imageDatabaseFailure;
+};
 
 const drawTypes3 = {
   applicationSuccess: new Path2D(
@@ -88,9 +81,6 @@ const drawTypes3 = {
   ),
 };
 
-
-
-
 export default function Canvas(props) {
   const [
     OFFSET,
@@ -100,36 +90,32 @@ export default function Canvas(props) {
     canvasHeight,
   ] = useCanvas();
 
-  // const netdata = props.data;
-  // const [offset, setOffset] = React.useState(0);
- //console.log(netdata);
   const handleClearCanvas = (event) => {
     setCoordinates([]);
   };
   useEffect(() => {
     if (props.networks) {
-    const canvasObj = canvasRef.current;
-    const ctx = canvasObj.getContext("2d");
-    // draw(ctx);
-    march();
-    draw2(ctx);
-   
+      const canvasObj = canvasRef.current;
+      const ctx = canvasObj.getContext("2d");
+      // draw(ctx);
+      march();
+      draw2(ctx);
     }
   }, [canvasRef]);
 
   useEffect(() => {
-    if(canvasRef == null) {
-      return
+    if (canvasRef == null) {
+      return;
     }
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     march();
     draw2(ctx);
-    
+
     // draw(ctx);
   }, [props.data]);
-  
+
   function march() {
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
@@ -138,20 +124,18 @@ export default function Canvas(props) {
     ctx.clearRect(LPrimaryX + 0, 500, canvasWidth, canvasHeight);
 
     // setOffset(offset + 1);
-    offset = offset+1;
+    offset = offset + 1;
     if (offset > 20) {
-        offset = 0;
-      }
-      draw(ctx);
-      
-      setTimeout(march, 60);
+      offset = 0;
     }
-  
+    draw(ctx);
 
- 
+    setTimeout(march, 60);
+  }
+
   const getImage2 = (item) => {
-      //return SVG_PATH;
-      //return drawTypes2.databaseSuccess;
+    //return SVG_PATH;
+    //return drawTypes2.databaseSuccess;
     switch (item.value1) {
       case "Application":
         return item.value3 === "FAIL"
@@ -163,7 +147,7 @@ export default function Canvas(props) {
   };
 
   const getNetworkData = (response) => {
-    console.log("----------")
+    console.log("----------");
     console.log(response);
     const NTdata = response?.data?.vara?.static_values;
     console.log(NTdata);
@@ -171,7 +155,7 @@ export default function Canvas(props) {
       return item.value2 !== "Link";
     });
     let primaryRow = 0;
-    let secondayRow = 0;  
+    let secondayRow = 0;
     let teritoryRaw = 0;
     const nodesNT: any = [];
 
@@ -223,8 +207,8 @@ export default function Canvas(props) {
     const width = 800;
     const height = 800;
     ctx.font = "bold 14px ARIAL";
-    ctx.fillText("PRIMARY SITE", 180,  50);
-    ctx.fillText("SECONDARY SITE", 880,  50);
+    ctx.fillText("PRIMARY SITE", 180, 50);
+    ctx.fillText("SECONDARY SITE", 880, 50);
     const networkData = getNetworkData(props.data);
     const { nodes, links } = networkData;
     console.log(nodes);
@@ -254,30 +238,38 @@ export default function Canvas(props) {
 
           //ctx.drawImage(imageObj1, 1000,500);
           //ctx.drawImage(image,150, val.row * image_gap,canvasWidth,canvasHeight);
-          ctx.drawImage(getImage(val.value1,val.value3), primaryX, val.row * image_gap );
+          ctx.drawImage(
+            getImage(val.value1, val.value3),
+            primaryX,
+            val.row * image_gap
+          );
           ctx.restore();
           //image_gap = image_gap + 150;
           break;
         case 2:
           //image_gap = image_gap + 150;
           ctx.font = "lighter 15px Arial";
-          ctx.fillText(val.key, secondaryX+300, val.row * gap + 75);
+          ctx.fillText(val.key, secondaryX + 300, val.row * gap + 75);
           ctx.save();
-          ctx.scale(1, 1  );
+          ctx.scale(1, 1);
           //ctx.translate(secondaryX, val.row * gap);
           //ctx.rotate((100 * Math.PI) / 180);
           //ctx.clearRect(0,0,canvasWidth,canvasHeight)
           var imageObj1 = new Image();
-          imageObj1.src = drawTypes.databaseFailed
+          imageObj1.src = drawTypes.databaseFailed;
           //ctx.drawImage(imageObj1, 1000,500);
           //ctx.drawImage(image,7000, val.row * image_gap,canvasWidth,canvasHeight);
-          ctx.drawImage(getImage(val.value1,val.value3), secondaryX+300, val.row * image_gap );
+          ctx.drawImage(
+            getImage(val.value1, val.value3),
+            secondaryX + 300,
+            val.row * image_gap
+          );
           ctx.restore();
           //image_gap = image_gap + 150;
-            // img.onload = function onload() {
-            //   ctx.drawImage(img, secondaryX, val.row * gap);
-            // };
-            // img.src = getImage(val);
+          // img.onload = function onload() {
+          //   ctx.drawImage(img, secondaryX, val.row * gap);
+          // };
+          // img.src = getImage(val);
 
           break;
 
@@ -306,39 +298,30 @@ export default function Canvas(props) {
           break;
       }
       // return <div key={val.key} />;
-      
     }
-    
   };
-  // function moveLine (posY) {
-  //   posY += speed;
-    
-  //   if (posY < 0 || posY > canvas.height) {
-  //     speed = speed * -1;
-  //   }
-  // }
-  //requestAnimationFrame(() => draw(ctx,i));
+
   const draw = (ctx) => {
     console.log("draw");
     // const ctx = canvas.current.getContext('2d');
     const width = 1000;
     const height = 1000;
-   
+
     const networkData = getNetworkData(props.data);
     const { nodes, links } = networkData;
-    const LSecondaryX = LPrimaryX + width / 2 +150;
+    const LSecondaryX = LPrimaryX + width / 2 + 150;
     const LTertiaryX = LSecondaryX + width / 3;
-    const img = document.createElement('img')
+    const img = document.createElement("img");
 
     ctx.strokeStyle = "#084a80";
     //ctx.strokeStyle = "#044a80";
-   
+
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.clearRect(LPrimaryX + 0, 50, width/1.5, height);
+    ctx.clearRect(LPrimaryX + 0, 50, width / 1.5, height);
     // ctx.clearRect(LSecondaryX -20, 70, width /1.5, height);
-//   setTimeout(function(){
-//     refreshPage()
-//  }, 10000);
+    //   setTimeout(function(){
+    //     refreshPage()
+    //  }, 10000);
     ctx.setLineDash([9, 2]);
     ctx.lineDashOffset = -offset;
     //ctx.strokeRect(10, 10, 100, 100);
@@ -367,7 +350,7 @@ export default function Canvas(props) {
         }
         switch (to.col) {
           case 1:
-            ctx.lineTo(LPrimaryX + 25, to.row * gap + 25 );
+            ctx.lineTo(LPrimaryX + 25, to.row * gap + 25);
             //ctx.requestAnimationFrame();
             break;
           case 2:
@@ -388,44 +371,10 @@ export default function Canvas(props) {
 
     ctx.lineWidth = 4;
     ctx.stroke();
-    // if (LPrimaryX >= canvasWidth) {
-    //   LPrimaryX = 0;
-    //   requestAnimationFrame(100);
-    // } else {
-    //   LPrimaryX = LPrimaryX + 1 + canvasWidth;
-    //   requestAnimationFrame(function() {
-    //     //drawLines(i);
-    //   });
-    // }
   };
-  // window.setInterval(dashInterval, 500);
-//   var currentOffset = 0;
-
-// function dashInterval() {
-//    // draw();
-//     currentOffset += 10;
-//     if (currentOffset >= 100) currentOffset = 0;
-// }
-  // requestAnimationFrame(100);
-  // function moveLine () {
-  //   posX += speed;
-    
-  //   if (posX < 0 || posX > canvasWidth) {
-  //     speed = speed * -1;
-  //   }
-  // }
-  // function loop() {
-  //   // clear old frame;
-  //   //ctx.clearRect(0,0,canvasWidth, canvasHeight);
-  //   moveLine();
-  //   //drawLine();
-  //   requestAnimationFrame(loop);
-  // }
-  // requestAnimationFrame(loop);
 
   return (
     <canvas
-    
       className="App-canvas"
       ref={canvasRef}
       width={canvasWidth}
