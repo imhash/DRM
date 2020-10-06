@@ -28,35 +28,93 @@ import { Variants } from "..";
 import { TimelineCard } from "..";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Box from "@material-ui/core/Box";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Config } from "../../config/DefaultSettings";
+
+let success = 0;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function ExecutionCard2(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [workflow, setWorkflow] = React.useState([]);
+
   //const props.data = props.data;
   console.log(props.data);
-  console.log("action", props.action);
-
+  // console.log("action", props.action);
+  console.log(props.data);
+  console.log("object", props.object);
+  console.log("executionWork", props.work);
   let successCount = props.work.filter((x) => x.status >= 1900).length;
   let success = (successCount / props.work.length) * 100;
 
-  const open = Boolean(anchorEl);
+  // const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   if (props.data == null) {
     return null;
   }
+  const objectname = props.data.name;
+  console.log("objectname");
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  //Date Conversion
+  if (props.data.start_time) {
+    var start_temp_time = new Date(props.data.start_time);
+    var start_time = start_temp_time.toLocaleString("en-US", {
+      timezone: Config.sys_timezone,
+    });
+  } else start_time = null;
+  if (props.data.end_time) {
+    var end_temp_time = new Date(props.data.end_time);
+    var end_time = end_temp_time.toLocaleString("en-US", {
+      timezone: Config.sys_timezone,
+    });
+  } else end_time = null;
+
+  const loadWorkflow = async () => {
+    const options = {
+      headers: {
+        Authorization: Config.authorization,
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await axios.post(
+      Config.base_url + "/" + Config.client + "/executions/",
+      { object_name: props.data.name },
+      options
+    );
+    console.log("runid", response.data);
+
+    setWorkflow(response.data);
+  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+
+  const handleClick = () => {
+    setOpen(true);
+    loadWorkflow();
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   return (
@@ -71,7 +129,7 @@ export default function ExecutionCard2(props) {
       >
         <CardContent>
           <Typography color="textSecondary">
-            {props.data.archive_key1}
+            {props.data.archive_key1} PROCESS
           </Typography>
 
           {/* <Card align="right"> */}
@@ -113,7 +171,7 @@ export default function ExecutionCard2(props) {
                 color="textSecondary"
                 style={{ paddingLeft: "20px" }}
               >
-                Start Time: {props.data.start_time}
+                Start Time: {start_time}
               </Typography>
               <Typography
                 variant="overline"
@@ -122,7 +180,7 @@ export default function ExecutionCard2(props) {
                 color="textSecondary"
                 style={{ paddingLeft: "20px" }}
               >
-                End Time: {props.data.end_time}
+                End Time: {end_time}
               </Typography>
               <Typography
                 variant="overline"
@@ -146,6 +204,21 @@ export default function ExecutionCard2(props) {
                 </Typography>
               </Box>
             </Box>
+          </Box>
+          <Box>
+            <Button variant="outlined" onClick={handleClick}>
+              Execute
+            </Button>
+            <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+            >
+              <Alert onClose={handleClose} severity="success">
+                Workflow executed!
+              </Alert>
+            </Snackbar>
           </Box>
         </CardContent>
         <CardActions>

@@ -124,7 +124,7 @@ export default function MainAppBar(props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -160,7 +160,7 @@ export default function MainAppBar(props) {
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </Drawer> */}
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {props.children}

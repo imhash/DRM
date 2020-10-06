@@ -15,6 +15,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles } from "@material-ui/core/styles";
 import { TimelineCard } from "../../components";
+import { Variants } from "../../components";
 import { ReadinessComponent } from "../../components";
 import { ReplicationComponent } from "../../components";
 import { ExecutionCard1 } from "../../components";
@@ -28,7 +29,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-import { LinearProgress } from "@material-ui/core";
+// import { LinearProgress } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
 
@@ -59,7 +60,7 @@ export default function Services(props) {
 
   const [serviceIndex, setServiceIndex] = React.useState(-1);
   const [open, setOpen] = React.useState(false);
-
+  // const [refreshKey, setRefreshKey] = useState(0);
   const [services, setServices] = React.useState([]);
   const [networks, setNetworks] = React.useState(null);
   const [readiness, setReadiness] = React.useState([]);
@@ -68,6 +69,7 @@ export default function Services(props) {
   const [execution2, setExecution2] = React.useState([]);
   const [children1, setChildren1] = React.useState([]);
   const [children2, setChildren2] = React.useState([]);
+  const [workflow, setWorkflow] = React.useState([]);
   const [links, setLinks] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const canvasRef = useRef(null);
@@ -83,15 +85,14 @@ export default function Services(props) {
   const handleOpen = () => {
     setOpen(true);
   };
-  function refreshPage() {
-    window.location.reload(false);
+
+  const ref = useRef()
+  const useForceUpdate = () => {
+    const [, setState] = React.useState()
+    return setState 
   }
 
-  // Auto Refresh Segment
-  //   setTimeout(function(){
-  //     refreshPage()
-  //  }, 10000);
-
+  
   useEffect(() => {
     if (serviceIndex > -1) {
       loadNetworks();
@@ -101,17 +102,20 @@ export default function Services(props) {
       loadExecution2();
       loadChildren1();
       loadChildren2();
+      
     }
   }, [serviceIndex]);
 
 
+ 
 
   useEffect(() => {
     loadServices();
-    //refreshPage();
-    //draw();
+    //  /refreshPage();
+   
+    // setTimeout(loadReplication, 300);
   }, []);
-
+ 
 
   const loadServices = async () => {
     const options = {
@@ -130,6 +134,24 @@ export default function Services(props) {
     setServiceIndex(0);
   };
 
+  const loadWorkflow = async () => {
+    const options = {
+      headers: { Authorization: Config.authorization },
+    };
+    const response = await axios.get(
+      Config.base_url +
+        "/" +
+        Config.client +
+        "/objects/" +
+        "VARA.DRM.WORKFLOWS",
+      options
+    );
+    console.log(response);
+    
+    setWorkflow(response.data.data.vara.static_values.services[1].key1.value1);
+    
+    };
+  
   const loadExecution1 = async () => {
     const options = {
       headers: { Authorization: Config.authorization },
@@ -144,7 +166,11 @@ export default function Services(props) {
     );
     console.log(response);
     setExecution1(response.data);
+    setTimeout(loadExecution1, Config.refresh_interval);
+
   };
+
+  
   const loadExecution2 = async () => {
     const options = {
       headers: { Authorization: Config.authorization },
@@ -159,6 +185,8 @@ export default function Services(props) {
     );
     console.log(response);
     setExecution2(response.data);
+    setTimeout(loadExecution2, Config.refresh_interval);
+
   };
 
   const loadChildren1 = async () => {
@@ -176,6 +204,8 @@ export default function Services(props) {
     );
     console.log("children", response.data.data);
     setChildren1(response.data.data);
+    setTimeout(loadChildren1, Config.refresh_interval);
+
   };
   const loadChildren2 = async () => {
     const options = {
@@ -192,6 +222,8 @@ export default function Services(props) {
     );
     console.log("children", response.data.data);
     setChildren2(response.data.data);
+    setTimeout(loadChildren2, Config.refresh_interval);
+
   };
 
   const loadNetworks = async () => {
@@ -208,6 +240,8 @@ export default function Services(props) {
     );
 
     setNetworks(response.data);
+    setTimeout(loadNetworks, Config.refresh_interval);
+
   };
 
   const loadReadiness = async () => {
@@ -227,12 +261,15 @@ export default function Services(props) {
       return parseInt(b) - parseInt(a);
     });
     setReadiness(values);
+    setTimeout(loadReadiness, Config.refresh_interval);
+
   };
 
   const loadReplication = async () => {
     const options = {
       headers: { Authorization: Config.authorization },
     };
+    // debugger;
     const response = await axios.get(
       Config.base_url +
         "/" +
@@ -246,6 +283,7 @@ export default function Services(props) {
       return parseInt(b) - parseInt(a);
     });
     setReplication(values);
+    setTimeout(loadReplication, Config.refresh_interval);
   };
 
   // if (services.length == 0) {
@@ -260,14 +298,14 @@ export default function Services(props) {
         </Grid>
       )}
       {!loading && (
-        <Grid container className={classes.root}>
-          <Grid item xs={11} align="right">
+        <Grid container className={classes.root} container spacing={3}>
+          {/* <Grid item xs={11} align="right">
             <IconButton aria-label="add an alarm" align="right">
               {" "}
               <AutorenewIcon />
               <Typography variant="overline">Auto Refresh in 90s</Typography>
             </IconButton>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <FormControl className={classes.formControl}>
               <InputLabel id="demo-controlled-open-select-label">
@@ -292,15 +330,18 @@ export default function Services(props) {
           </Grid>
 
           <Grid item xs={5}>
-          
-            <ExecutionCard1 data={execution1} work={children1} />
+          <Paper>
+            <ExecutionCard1 data={execution1} work={children1} object={workflow}/>
+            </Paper>
             <Grid>
               <TimelineCard data={children1} />
             </Grid>
           </Grid>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={5}>
+          {/* <Grid item xs={1}></Grid> */}
+          <Grid item xs={5} >
+            <Paper>
             <ExecutionCard2 data={execution2} work={children2} />
+            </Paper>
             <Grid>
               <TimelineCard data={children2} />
             </Grid>

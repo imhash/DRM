@@ -12,6 +12,7 @@ import SimplePopover from './simplepopover/SimplePopover';
 import DoughnutChart from './doughnutchart/DoughnutChart';
 import Variants from './variants/Variants';
 import TimelineCard from './timelinecard/TimelineCard';
+import ResponsiveDialog from './responsiveDialog/ResponsiveDialog';
 export {
     AppBar,
     GoogleMapsComponent, 
@@ -26,4 +27,5 @@ export {
     DoughnutChart,
     Variants,
     TimelineCard,
+    ResponsiveDialog,
 }

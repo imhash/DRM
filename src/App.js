@@ -52,7 +52,7 @@ export default function App() {
             <SendEmail />
           </Route>
           <Route path="/">
-            <Home />
+            <Services />
           </Route>
         </Switch>
       </AppBar>

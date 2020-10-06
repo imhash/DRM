@@ -23,38 +23,37 @@ import FastfoodIcon from "@material-ui/icons/Fastfood";
 import LaptopMacIcon from "@material-ui/icons/LaptopMac";
 import HotelIcon from "@material-ui/icons/Hotel";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import NavigationRoundedIcon from "@material-ui/icons/NavigationRounded";
 import AssignmentTwoToneIcon from "@material-ui/icons/AssignmentTwoTone";
 import { Variants } from "../../components";
+import { Config } from "../../config/DefaultSettings";
+
+// import RepeatIcon from '@material-ui/icons/Repeat';
 import PlayArrowTwoToneIcon from "@material-ui/icons/PlayArrowTwoTone";
 import CheckCircleTwoToneIcon from "@material-ui/icons/CheckCircleTwoTone";
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: "6px 16px",
   },
-});
+  secondaryTail: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+}));
 export default function TimelineCard(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
+  let end_time = null;
+  let colorCode = null;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const statusIcon = (status) => {
-    if (status === "1900") {
-      return <CheckCircleTwoToneIcon />;
-    } else if (status === "0") {
-      return <PlayArrowTwoToneIcon />;
-    } else if (status === "0") {
-      return <PlayArrowTwoToneIcon />;
-    } else return <CheckCircleTwoToneIcon />;
   };
 
   return (
@@ -77,25 +76,43 @@ export default function TimelineCard(props) {
         }}
       >
         {props.data.map((item) => {
+          if (item.end_time) {
+            var end_temp_time = new Date(item.end_time);
+            var end_time = end_temp_time.toLocaleString("en-US", {
+              timezone: Config.sys_timezone,
+            });
+          }
+
+          // console.log("colorCode",colorCode);
           return (
             <Timeline align="alternate">
               <TimelineItem>
                 <TimelineOppositeContent>
                   <Typography variant="body2" color="textSecondary">
-                    {item.end_time}
+                    {end_time}
                   </Typography>
                 </TimelineOppositeContent>
                 <TimelineSeparator>
-                  <TimelineDot>
+                  {/* <TimelineDot color={colorCode}> */}
+                  {/* <TimelineDot color={item.status < 1300 ? "primary" : item.status < 1900 && item.status > 1300? "secondary" : "grey"}> */}
+                  <TimelineDot
+                    color={
+                      item.status < 1800
+                        ? "primary"
+                        : item.status === 1900
+                        ? "grey"
+                        : "secondary"
+                    }
+                  >
                     {/* <AssignmentTwoToneIcon /> */}
-                    {statusIcon(item.status)}
+                    <NavigationRoundedIcon />
                   </TimelineDot>
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>
                   <Paper elevation={3} className={classes.paper}>
                     <Typography variant="h6" component="h1">
-                      {item.name}
+                      {item.alias}
                     </Typography>
                     <Typography>{item.status_text}</Typography>
                   </Paper>
