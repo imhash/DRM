@@ -76,7 +76,9 @@ export default function Services(props) {
   const [count, setCount] = React.useState(0);
 
   const handleChange = (event) => {
-    setServiceIndex(event.target.value);
+      setServiceIndex(event.target.value);
+
+ 
   };
 
   const handleClose = () => {
@@ -94,7 +96,11 @@ export default function Services(props) {
   };
 
   useEffect(() => {
+    if(serviceIndex == -1) {
+      return
+    }
     const interval = setInterval(() => {
+      console.log("setInterval")
       loadNetworks();
       loadReadiness();
       loadReplication();
@@ -102,17 +108,20 @@ export default function Services(props) {
       loadExecution2();
       loadChildren1();
       loadChildren2();
+      loadServices();
+
       // console.log('updated');
     }, Config.refresh_interval);
 
     return () => clearInterval(interval);
-  }, [serviceIndex]);
+  }, [serviceIndex, services]);
 
   useEffect(() => {
     loadServices();
   }, []);
 
   const loadServices = async () => {
+    console.log("loadServicesInterval")
     const options = {
       headers: { Authorization: Config.authorization },
     };
@@ -124,9 +133,11 @@ export default function Services(props) {
         Config.application_list,
       options
     );
-    console.log(response);
+    // console.log("http", response.data.data.vara.static_values);
     setServices(response.data.data.vara.static_values);
-    setServiceIndex(0);
+    if(serviceIndex == -1) {
+      setServiceIndex(0);
+    }
   };
 
   const loadWorkflow = async () => {
@@ -150,12 +161,15 @@ export default function Services(props) {
     const options = {
       headers: { Authorization: Config.authorization },
     };
+    console.log("http",services)
+    const url = Config.base_url +
+    "/" +
+    Config.client +
+    "/executions/" +
+    services[serviceIndex].value1
+    console.log(url)
     const response = await axios.get(
-      Config.base_url +
-        "/" +
-        Config.client +
-        "/executions/" +
-        services[serviceIndex].value1,
+      url,
       options
     );
     console.log(response);
@@ -298,7 +312,12 @@ export default function Services(props) {
                 onOpen={handleOpen}
                 value={serviceIndex}
                 onChange={handleChange}
+                
               >
+                {/* {setInterval(() => {
+                  {handleChange}
+                }, 100);} */}
+ 
                 {services.map((item, index) => (
                   <MenuItem value={index}>{item.key}</MenuItem>
                 ))}
