@@ -195,7 +195,7 @@ export default function ExecutionCard1(props) {
                 color="textSecondary"
                 style={{ paddingLeft: "20px" }}
               >
-                Estimated Runtime: {props.data.estimated_runtime}
+                Estimated Runtime: {(props.data.estimated_runtime/60).toFixed(2)} min(s)
               </Typography>
               <Box width="100%" mr={1}>
                 <Typography
