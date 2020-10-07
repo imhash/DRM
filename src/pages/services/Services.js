@@ -60,7 +60,7 @@ export default function Services(props) {
 
   const [serviceIndex, setServiceIndex] = React.useState(-1);
   const [open, setOpen] = React.useState(false);
-  // const [refreshKey, setRefreshKey] = useState(0);
+  let refresh_key = 0;
   const [services, setServices] = React.useState([]);
   const [networks, setNetworks] = React.useState(null);
   const [readiness, setReadiness] = React.useState([]);
@@ -73,6 +73,7 @@ export default function Services(props) {
   const [links, setLinks] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const canvasRef = useRef(null);
+  const [count, setCount] = React.useState(0);
 
   const handleChange = (event) => {
     setServiceIndex(event.target.value);
@@ -86,15 +87,14 @@ export default function Services(props) {
     setOpen(true);
   };
 
-  const ref = useRef()
+  const ref = useRef();
   const useForceUpdate = () => {
-    const [, setState] = React.useState()
-    return setState 
-  }
+    const [, setState] = React.useState();
+    return setState;
+  };
 
-  
   useEffect(() => {
-    if (serviceIndex > -1) {
+    const interval = setInterval(() => {
       loadNetworks();
       loadReadiness();
       loadReplication();
@@ -102,20 +102,15 @@ export default function Services(props) {
       loadExecution2();
       loadChildren1();
       loadChildren2();
-      
-    }
+      // console.log('updated');
+    }, Config.refresh_interval);
+
+    return () => clearInterval(interval);
   }, [serviceIndex]);
-
-
- 
 
   useEffect(() => {
     loadServices();
-    //  /refreshPage();
-   
-    // setTimeout(loadReplication, 300);
   }, []);
- 
 
   const loadServices = async () => {
     const options = {
@@ -147,11 +142,10 @@ export default function Services(props) {
       options
     );
     console.log(response);
-    
+
     setWorkflow(response.data.data.vara.static_values.services[1].key1.value1);
-    
-    };
-  
+  };
+
   const loadExecution1 = async () => {
     const options = {
       headers: { Authorization: Config.authorization },
@@ -166,11 +160,8 @@ export default function Services(props) {
     );
     console.log(response);
     setExecution1(response.data);
-    setTimeout(loadExecution1, Config.refresh_interval);
-
   };
 
-  
   const loadExecution2 = async () => {
     const options = {
       headers: { Authorization: Config.authorization },
@@ -185,8 +176,6 @@ export default function Services(props) {
     );
     console.log(response);
     setExecution2(response.data);
-    setTimeout(loadExecution2, Config.refresh_interval);
-
   };
 
   const loadChildren1 = async () => {
@@ -204,8 +193,6 @@ export default function Services(props) {
     );
     console.log("children", response.data.data);
     setChildren1(response.data.data);
-    setTimeout(loadChildren1, Config.refresh_interval);
-
   };
   const loadChildren2 = async () => {
     const options = {
@@ -222,8 +209,6 @@ export default function Services(props) {
     );
     console.log("children", response.data.data);
     setChildren2(response.data.data);
-    setTimeout(loadChildren2, Config.refresh_interval);
-
   };
 
   const loadNetworks = async () => {
@@ -240,8 +225,6 @@ export default function Services(props) {
     );
 
     setNetworks(response.data);
-    setTimeout(loadNetworks, Config.refresh_interval);
-
   };
 
   const loadReadiness = async () => {
@@ -261,8 +244,6 @@ export default function Services(props) {
       return parseInt(b) - parseInt(a);
     });
     setReadiness(values);
-    setTimeout(loadReadiness, Config.refresh_interval);
-
   };
 
   const loadReplication = async () => {
@@ -283,15 +264,11 @@ export default function Services(props) {
       return parseInt(b) - parseInt(a);
     });
     setReplication(values);
-    setTimeout(loadReplication, Config.refresh_interval);
   };
-
-  // if (services.length == 0) {
-  //   return <Grid container className={classes.root} />;
-  // }
 
   return (
     <div className="root">
+      {/* {setCounter(1)} */}
       {loading && (
         <Grid align="right">
           <CircularProgress disableShrink />{" "}
@@ -330,17 +307,21 @@ export default function Services(props) {
           </Grid>
 
           <Grid item xs={5}>
-          <Paper>
-            <ExecutionCard1 data={execution1} work={children1} object={workflow}/>
+            <Paper>
+              <ExecutionCard1
+                data={execution1}
+                work={children1}
+                object={workflow}
+              />
             </Paper>
             <Grid>
               <TimelineCard data={children1} />
             </Grid>
           </Grid>
           {/* <Grid item xs={1}></Grid> */}
-          <Grid item xs={5} >
+          <Grid item xs={5}>
             <Paper>
-            <ExecutionCard2 data={execution2} work={children2} />
+              <ExecutionCard2 data={execution2} work={children2} />
             </Paper>
             <Grid>
               <TimelineCard data={children2} />
@@ -364,13 +345,10 @@ export default function Services(props) {
             <Typography variant="overline" component="h4">
               Services Information
             </Typography>
-            <Card>
-              {networks == null ? null : <Canvas data={networks} />}
-            </Card>
+            <Card>{networks == null ? null : <Canvas data={networks} />}</Card>
           </Grid>
         </Grid>
       )}
     </div>
   );
 }
-
