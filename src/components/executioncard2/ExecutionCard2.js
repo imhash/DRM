@@ -56,7 +56,8 @@ export default function ExecutionCard2(props) {
   console.log("object", props.object);
   console.log("executionWork", props.work);
   let successCount = props.work.filter((x) => x.status >= 1900).length;
-  let success = (successCount / props.work.length) * 100;
+  let successPercent = (successCount / props.work.length) * 100;
+  let success = successPercent.toFixed(0);
 
   // const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
