@@ -275,7 +275,7 @@ export default function Services(props) {
         </Grid>
       )}
       {!loading && (
-        <Grid container className={classes.root} container spacing={3}>
+        <Grid container className={classes.root} container spacing={1}>
           {/* <Grid item xs={11} align="right">
             <IconButton aria-label="add an alarm" align="right">
               {" "}
@@ -318,7 +318,7 @@ export default function Services(props) {
               <TimelineCard data={children1} />
             </Grid>
           </Grid>
-          {/* <Grid item xs={1}></Grid> */}
+          <Grid item xs={1}></Grid>
           <Grid item xs={5}>
             <Paper>
               <ExecutionCard2 data={execution2} work={children2} />

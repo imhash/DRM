@@ -88,7 +88,10 @@ export default function Canvas(props) {
     }
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
+
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.beginPath();
+
     // march();
     draw2(ctx);
 
@@ -98,9 +101,10 @@ export default function Canvas(props) {
   function march() {
     const canvasObj = canvasRef.current;
     const ctx = canvasObj.getContext("2d");
-    // ctx.clearRect(LPrimaryX + 0, 50, canvasWidth/3, canvasHeight+500);
+    ctx.clearRect(LPrimaryX + 0, 50, canvasWidth/3, canvasHeight+500);
+    ctx.beginPath();
     // ctx.clearRect(LPrimaryX + 0, 50, width/1.5, height);
-    ctx.clearRect(LPrimaryX + 0, 500, canvasWidth, canvasHeight);
+    // ctx.clearRect(LPrimaryX + 0, 500, canvasWidth, canvasHeight);
 
     // setOffset(offset + 1);
     offset = offset + 1;
@@ -109,7 +113,7 @@ export default function Canvas(props) {
     }
     draw(ctx);
 
-    setTimeout(march, 60);
+    setTimeout(march, 1000);
   }
 
   const getImage2 = (item) => {
@@ -285,8 +289,8 @@ export default function Canvas(props) {
   const draw = (ctx) => {
     console.log("draw");
     // const ctx = canvas.current.getContext('2d');
-    const width = 1000;
-    const height = 1000;
+    const width = 800;
+    const height = 800;
 
     const networkData = getNetworkData(props.data);
     const { nodes, links } = networkData;
@@ -298,7 +302,9 @@ export default function Canvas(props) {
     //ctx.strokeStyle = "#044a80";
 
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.fillReact()
     ctx.clearRect(LPrimaryX + 0, 50, width / 1.5, height);
+    // ctx.canvas.width = ctx.canvas.width;
     // ctx.clearRect(LSecondaryX -20, 70, width /1.5, height);
     //   setTimeout(function(){
     //     refreshPage()

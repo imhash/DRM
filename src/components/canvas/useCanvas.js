@@ -7,8 +7,8 @@ const SVG_PATH = new Path2D(heartSVG);
 // Scaling Constants for Canvas
 const SCALE = 0.1;
 //export const OFFSET = 80;
-export const canvasWidth = 1400;
-export const canvasHeight = 1400;
+export const canvasWidth = 1200;
+export const canvasHeight = 1200;
 
 export function useCanvas(){
     const canvasRef = useRef(null);
